@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const User = require('../models/user');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const User = require("../models/user");
 
 class AuthService {
   async authenticate(email, password) {
@@ -19,19 +19,23 @@ class AuthService {
         return null;
       }
     } catch (error) {
-      console.error('Lỗi xác thực người dùng:', error.message);
+      console.error("Lỗi xác thực người dùng:", error.message);
       throw error;
     }
   }
 
   generateToken(user) {
-    const token = jwt.sign({ userId: user._id, email: user.email }, 'your-secret-key', { expiresIn: '1h' });
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      "your-secret-key",
+      { expiresIn: "2h" }
+    );
     return token;
   }
 
   verifyToken(token) {
     try {
-      const decoded = jwt.verify(token, 'your-secret-key');
+      const decoded = jwt.verify(token, "your-secret-key");
       return decoded;
     } catch (error) {
       return null;

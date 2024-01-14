@@ -59,4 +59,26 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+router.get("/user", async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+
+    if (!token) {
+      return res.status(401).json({ message: "Token không được cung cấp" });
+    }
+
+    const decoded = authService.verifyToken(token);
+
+    if (decoded) {
+      const user = await User.findById(decoded.userId);
+      res.status(200).json({ user });
+    } else {
+      res.status(401).json({ message: "Token không hợp lệ" });
+    }
+  } catch (error) {
+    console.error("Lỗi lấy thông tin người dùng:", error.message);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+});
+
 module.exports = router;
