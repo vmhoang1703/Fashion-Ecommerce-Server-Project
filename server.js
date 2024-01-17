@@ -5,6 +5,7 @@ const connectDB = require('./db');
 
 //import routes
 const authRouter = require('./routes/auth');
+const productRouter = require('./routes/product');
 
 const app = express();
 const port = 5000;
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 connectDB();
 
 app.use('/api/auth', authRouter);
+app.use('/api/products', productRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
