@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const collectionSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: true,
     },
@@ -13,7 +13,7 @@ const collectionSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    image: {
+    imageUrl: {
         type: String,
         required: true,
     }
