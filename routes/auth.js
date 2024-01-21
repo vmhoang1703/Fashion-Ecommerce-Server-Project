@@ -23,6 +23,10 @@ router.post("/signup", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     password = await bcrypt.hash(password, salt);
 
+    if (!password) {
+      return res.status(400).json({ message: "Mật khẩu không hợp lệ" });
+    }
+
     // Tạo người dùng mới
     const newUser = new User({ fullname, email, password });
 
