@@ -29,6 +29,18 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const collectionId = req.params.id;
+    const collection = await Collection.findById(collectionId);
+    collection.imageUrl = undefined;
+    res.status(200).json({ collection });
+  } catch (error) {
+    console.error("Lỗi lấy bộ sưu tập:", error.message);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+});
+
 router.get("/image/:id", async (req, res) => {
   try {
     const collectionId = req.params.id;
@@ -45,6 +57,7 @@ router.post("/create", upload.single("image"), async (req, res) => {
   try {
     const title = req.body.title;
     const description = req.body.description;
+    console.log(req.file);
     const imageUrl = path.join("assets/uploads", req.file.originalname);
 
     const collection = new Collection({
@@ -69,6 +82,29 @@ router.delete("/delete/:id", async (req, res) => {
     res.status(200).json({ message: "Xóa bộ sưu tập thành công" });
   } catch (error) {
     console.error("Lỗi xóa bộ sưu tập:", error.message);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+});
+
+router.put("/update/:id", upload.single("image"), async (req, res) => {
+  try {
+    const collectionId = req.params.id;
+    const title = req.body.title;
+    const description = req.body.description;
+    let imageUrl = req.body.imageUrl;
+    if (req.file) {
+      imageUrl = path.join("assets/uploads", req.file.originalname);
+    }
+
+    await Collection.findByIdAndUpdate(collectionId, {
+      title: title,
+      description: description,
+      imageUrl: imageUrl,
+    });
+
+    res.status(200).json({ message: "Cập nhật bộ sưu tập thành công" });
+  } catch (error) {
+    console.error("Lỗi cập nhật bộ sưu tập:", error.message);
     res.status(500).json({ message: "Lỗi server" });
   }
 });
