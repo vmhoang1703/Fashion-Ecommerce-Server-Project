@@ -82,7 +82,7 @@ router.put("/update/:id", async (req, res) => {
       imageUrl: req.body.imageUrl,
     });
 
-    res.status(200).json({ message: "success" });
+    res.status(200).json({ message: "Cập nhật bộ sưu tập thành công" });
   } catch (error) {
     console.error("Lỗi cập nhật bộ sưu tập:", error.message);
     res.status(500).json({ message: "Lỗi server" });

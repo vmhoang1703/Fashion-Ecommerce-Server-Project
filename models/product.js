@@ -13,17 +13,25 @@ const productSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  quantity: {
+    type: Number,
+    require: true,
+  },
   sold: {
     type: Number,
     default: 0,
   },
-  image: {
+  collectionId: {
     type: String,
     require: true,
   },
-  category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Collection",
+  mainImageUrl: {
+    type: String,
+    require: true,
+  },
+  otherImageUrls: {
+    type: [String],
+    default: [],
   },
 });
 

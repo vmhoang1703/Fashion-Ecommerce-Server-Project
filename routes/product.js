@@ -34,4 +34,35 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/products-by-collection/:id", async (req, res) => {
+  try {
+    const collectionId = req.params.id;
+    const products = await Product.find({ collectionId: collectionId });
+    res.status(200).json({ products });
+  } catch (error) {
+    console.error("Lỗi lấy danh sách sản phẩm:", error.message);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+});
+
+router.post("/create", async (req, res) => {
+  try {
+    const { name, description, price, quantity, collectionId, mainImageUrl, otherImageUrls } = req.body;
+    const product = new Product({
+      name,
+      description,
+      price,
+      quantity,
+      collectionId,
+      mainImageUrl,
+      otherImageUrls,
+    });
+    await product.save();
+    res.status(201).json({ message: "Tạo sản phẩm thành công" });
+  } catch (error) {
+    console.error("Lỗi tạo sản phẩm:", error.message);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+});
+
 module.exports = router;
