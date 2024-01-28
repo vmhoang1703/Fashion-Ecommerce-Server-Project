@@ -25,13 +25,13 @@ const productSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  imageUrls: {
+    type: [String],
+    required: true,
+  },
   mainImageUrl: {
     type: String,
-    require: true,
-  },
-  otherImageUrls: {
-    type: [String],
-    default: [],
+    required: true,
   },
 });
 
