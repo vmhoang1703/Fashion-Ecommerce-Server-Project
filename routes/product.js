@@ -117,7 +117,13 @@ router.put("/update/:id", async (req, res) => {
     const productId = req.params.id;
 
     await Product.findByIdAndUpdate(productId, {
-      ...req.body,
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      quantity: req.body.quantity,
+      collectionId: req.body.collectionId,
+      imageUrls: req.body.imageUrls,
+      mainImageUrl: req.body.mainImageUrl
     });
 
     res.status(200).json({ message: "Cập nhật sản phẩm thành công" });
