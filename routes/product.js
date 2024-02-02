@@ -90,7 +90,7 @@ router.post("/create", async (req, res) => {
       quantity,
       sold,
       collectionId,
-      imageUrls, 
+      imageUrls,
       mainImageUrl,
     });
     await product.save();
@@ -123,12 +123,64 @@ router.put("/update/:id", async (req, res) => {
       quantity: req.body.quantity,
       collectionId: req.body.collectionId,
       imageUrls: req.body.imageUrls,
-      mainImageUrl: req.body.mainImageUrl
+      mainImageUrl: req.body.mainImageUrl,
     });
 
     res.status(200).json({ message: "Cập nhật sản phẩm thành công" });
   } catch (error) {
     console.error("Lỗi cập nhật sản phẩm:", error.message);
+    res.status(500).json({ message: "Lỗi server" });
+  }
+});
+
+router.post("/filter", async (req, res) => {
+  try {
+    let filter = {};
+
+    // Áp dụng điều kiện sắp xếp (sortBy)
+    const sortBy = req.body.sortBy;
+    let sortOptions = {};
+    if (sortBy === "oldest") {
+      sortOptions = { createdAt: 1 };
+    } else if (sortBy === "newest") {
+      sortOptions = { createdAt: -1 };
+    } else if (sortBy === "bestseller") {
+      sortOptions = { sold: -1 };
+    }
+
+    // Áp dụng điều kiện giá (minPrice và maxPrice)
+    const minPrice = req.body.priceRange[0];
+    const maxPrice = req.body.priceRange[1];
+    if (minPrice && maxPrice) {
+      filter.price = { $gte: minPrice * 1000, $lte: maxPrice * 1000 };
+    }
+
+    // Áp dụng điều kiện danh mục (collections)
+    const collections = req.body.collections;
+    if (collections && collections.length > 0) {
+      filter.collectionId = { $in: collections };
+    }
+
+    // Áp dụng điều kiện tồn kho (inStock và outOfStock)
+    if (req.body.inStock) {
+      filter.quantity = { $gt: 0 };
+    }
+
+    if (req.body.outOfStock) {
+      filter.quantity = { $eq: 0 };
+    }
+
+    if (req.body.inStock && req.body.outOfStock) {
+      filter.quantity = { $gte: 0 };
+    }
+
+    const productsFiltered = await Product.find(filter).sort(sortOptions);
+
+    res
+      .status(200)
+      .json({ message: "Lọc sản phẩm thành công", productsFiltered });
+  } catch (error) {
+    console.error("Lỗi lọc sản phẩm:", error.message);
     res.status(500).json({ message: "Lỗi server" });
   }
 });
