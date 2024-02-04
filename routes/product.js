@@ -134,6 +134,11 @@ router.put("/update/:id", async (req, res) => {
       collectionId: req.body.collectionId,
       imageUrls: req.body.imageUrls,
       mainImageUrl: req.body.mainImageUrl,
+      size: req.body.size,
+      material: req.body.material,
+      color: req.body.color,
+      brand: req.body.brand,
+      favoriteCount: req.body.favoriteCount
     });
 
     res.status(200).json({ message: "Cập nhật sản phẩm thành công" });
