@@ -82,6 +82,11 @@ router.post("/create", async (req, res) => {
       collectionId,
       imageUrls,
       mainImageUrl,
+      size,
+      material,
+      color,
+      brand,
+      favoriteCount
     } = req.body;
     const product = new Product({
       name,
@@ -92,6 +97,11 @@ router.post("/create", async (req, res) => {
       collectionId,
       imageUrls,
       mainImageUrl,
+      size,
+      material,
+      color,
+      brand,
+      favoriteCount
     });
     await product.save();
     res.status(201).json({ message: "Tạo sản phẩm thành công" });
