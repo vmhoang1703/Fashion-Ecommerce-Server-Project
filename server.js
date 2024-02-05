@@ -1,6 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const mongoose = require('mongoose');
+require('dotenv').config();
+
+//connect db
 const connectDB = require('./db');
 
 //import routes
@@ -9,7 +13,7 @@ const productRouter = require('./routes/product');
 const collectionRouter = require('./routes/collection');
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT;
 
 app.use(cors());
 app.use(bodyParser.json());
