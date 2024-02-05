@@ -19,14 +19,11 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ message: "Dữ liệu đầu vào không hợp lệ" });
     }
 
-    const existingUser = await User.findOne({ email }).timeout(20000).catch(error => {
-      console.error("Lỗi truy vấn cơ sở dữ liệu:", error);
-      throw error;
-    });    
+    // const existingUser = await User.findOne({ email });
 
-    if (existingUser) {
-      return res.status(400).json({ message: "Email đã tồn tại" });
-    }
+    // if (existingUser) {
+    //   return res.status(400).json({ message: "Email đã tồn tại" });
+    // }
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
